@@ -1,0 +1,34 @@
+import argparse
+import string
+
+def encrypt(data, key):
+    result = ''.join(caesar(char, -key) for char in data)
+    return result
+
+def decrypt(data, key):
+    result = ''.join(caesar(char, key) for char in data)
+    return result
+
+def caesar(char, shift):
+    if char.isalpha():
+        start = ord('A') if char.isupper() else ord('a')
+        return chr((ord(char) - start + shift) % 26 + start)
+    return char
+
+def main():
+    parser = argparse.ArgumentParser(description='Encrypt or decrypt data using the Caesar cipher.')
+    parser.add_argument('-d', '--data', default='', help='Data for decrypt/encrypt')
+    parser.add_argument('-k', '--key', type=int, default=0, help='Key value for Caesar cipher')
+    parser.add_argument('-v', '--verbose', action='store_true', help='Decrypt string')
+
+    args = parser.parse_args()
+
+    if args.verbose:
+        # Decrypt
+        print(f'Decrypt: {decrypt(args.data, args.key)}')
+    else:
+        # Encrypt
+        print(f'Encrypt: {encrypt(args.data.lower(), args.key)}')
+
+if __name__ == '__main__':
+    main()
